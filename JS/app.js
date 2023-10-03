@@ -65,11 +65,10 @@ const moveY = () =>{
 
 const lineInterval = setInterval(() => {
     moveY()
-    if (positionLine[4] >= 190 || positionLine[4] >= 199) {
+    if (positionLine[4] >= 190 || positionLine[4] >= 199 || container.children[positionLine[4] + 10].classList.contains(`${currentColor}`)) {
         positionLine = [4,14,24,34,44]
         createLine(randomColor(colors))
     }
-    
 }, 1000);    
 
 //movimiento X
@@ -103,7 +102,7 @@ document.addEventListener("keydown",(e)=>{
     }
 
     }else if(e.key == "ArrowDown"){
-        if (positionLine[4] >= 180 || positionLine[4] >= 189) {
+        if (positionLine[4] >= 180 || positionLine[4] >= 189||container.children[positionLine[4] + 20].classList.contains(`${currentColor}`)) {
         }else{
             positionLine.forEach(e=>{
                 container.children[e].classList.remove(`${currentColor}`);

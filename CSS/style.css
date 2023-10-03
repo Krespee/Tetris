@@ -21,3 +21,19 @@ body{
     height: 29.8px;
     border: .01px solid white;
 }
+
+.block-blue{
+    background-color: blue;
+}
+.block-red{
+    background-color: red;
+}
+.block-green{
+    background-color: green;
+}
+.block-yellow{
+    background-color: yellow;
+}
+.block-white{
+    background-color: white;
+}

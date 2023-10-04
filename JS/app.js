@@ -71,8 +71,27 @@ const moveY = () =>{
 }
 
 const lineInterval = setInterval(() => {
-
+    let countBlocks = 1; 
+    let blocks = []
     if (positionLine[4] >= 190 || positionLine[4] >= 199 || container.children[positionLine[4] + 10].classList.contains(`active`) || container.children[positionLine[3] + 10].classList.contains(`active`)|| container.children[positionLine[2] + 10].classList.contains(`active`) || container.children[positionLine[1] + 10].classList.contains(`active`) || container.children[positionLine[0] + 10].classList.contains(`active`)) {
+        for (const item of container.children) {
+            if (item.classList.contains("active")) {
+                countBlocks++
+                blocks.push(item.id)
+                if (countBlocks == 10) {
+                    blocks.forEach(e => {
+                        container.children[e].classList.remove();
+                        container.children[e].classList.add("box");
+                    });
+                    countBlocks = 1;
+                }
+            }else{
+                countBlocks = 1;
+                blocks= [];
+            }
+
+        }
+
         positionLine.forEach(e=>{
             container.children[e].classList.add(`active`);
         })
@@ -88,7 +107,7 @@ const lineInterval = setInterval(() => {
 document.addEventListener("keydown",(e)=>{
 
     if (e.key == "ArrowRight") {
-        if (positionLine[0] % 10 === 9) {
+        if (positionLine[0] % 10 === 9 || container.children[positionLine[4] + 1].classList.contains(`active`) || container.children[positionLine[3] + 1].classList.contains(`active`)|| container.children[positionLine[2] + 1].classList.contains(`active`) || container.children[positionLine[1] + 1].classList.contains(`active`) || container.children[positionLine[0] + 1].classList.contains(`active`)) {
             
         }else{
             positionLine.forEach(e=>{
@@ -102,7 +121,7 @@ document.addEventListener("keydown",(e)=>{
         }
 
     }else if(e.key == "ArrowLeft"){
-        if (positionLine[0] % 10 === 0) {
+        if (positionLine[0] % 10 === 0|| container.children[positionLine[4] - 1].classList.contains(`active`) || container.children[positionLine[3] - 1].classList.contains(`active`)|| container.children[positionLine[2] - 1].classList.contains(`active`) || container.children[positionLine[1] - 1].classList.contains(`active`) || container.children[positionLine[0] - 1].classList.contains(`active`)) {
             
         }else {        
             positionLine.forEach(e=>{

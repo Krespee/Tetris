@@ -71,6 +71,7 @@ const createBlock5 = (color) =>{
 
 //Elegir bloque y color al azar y llamar a la funcion que crea el bloque
 const createBlock = (color, form) =>{
+    
     if (form == "line") {
         positionForm = [4,14,24,34,44]
         createBlock5(color)
@@ -107,27 +108,53 @@ const colision = () =>{
     })
 }
 
+//gravedad v1.1
+const gravity2 = (blockLimit) =>{
+    
+    for (let i = blockLimit[0]-1; i >= 0; i--){
+        if (container.children[i].classList.contains("active") && !container.children[i + 10].classList.contains("active")) {
+            container.children[i + 10].classList.add(container.children[i].classList[1])
+            container.children[i].classList.remove(container.children[i].classList[1])
+            container.children[i].classList.remove("active")
+            container.children[i + 10].classList.add("active")
+        }
+    }
+}
+
+document.addEventListener("click",(e)=>{
+    container.children[e.target.id].classList.add("active")
+    container.children[e.target.id].classList.add("block-blue")
+})
+
+
 //destruyendo linea de bloques
 const destroyBlocksLine = ()=>{
     let countBlocks = 0; 
     let blocks = []
     for (const item of container.children) {
         if (item.classList.contains("active")) {
-            countBlocks++
             blocks.push(item.id)
-            if (countBlocks == 10) {
-                blocks.forEach(e => {
-                    container.children[e].className = "";
-                    container.children[e].classList.add("box");  
-                });
-                countBlocks = 0;
+            if (blocks[0] % 10 === 0) {
+                countBlocks++
+                if (countBlocks == 10) {
+                    console.log(blocks);
+                    blocks.forEach(e => {
+                        container.children[e].className = "";
+                        container.children[e].classList.add("box");  
+                    });
+                    gravity2(blocks)
+                    countBlocks = 0;
+                    blocks = []
+                }
+            }else{
+                blocks = []
             }
+            
         }else{
             countBlocks = 0;
             blocks= [];
         }
     }
-    gravity()
 }
 
 const lineInterval = setInterval(() => {
@@ -151,7 +178,7 @@ const lineInterval = setInterval(() => {
         }
     }
     
-}, 200);    
+}, 1000);    
 
 //movimiento X
 

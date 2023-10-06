@@ -1,6 +1,7 @@
 //configs
 let currentColor = "";
-let positionLine = [4,14,24,34,44]
+let positionForm = []
+let currentForm = ""
 
 //
 
@@ -16,7 +17,6 @@ const createBox = () =>{
     }
     container.appendChild(fragment)
 }
-
 createBox()
 
 
@@ -30,12 +30,14 @@ const randomColor = colors =>{
 }
 
 //formas
-const forms = ["line", "square", "l", "smallsquare"];
+const forms = ["line", "square", "l", "z"];
 const randomForm = forms =>{
-    return forms[Math.floor(Math.random()*4)]
+    let numRandom = Math.floor(Math.random()*4);
+    currentForm = forms[numRandom]
+    return forms[numRandom]
 }
 
-//creacion de bloques
+//añadiendo gravedad
 const gravity = () =>{
     for (let i = 0; i <= 20; i++) {
         for (const item of container.children) {
@@ -52,121 +54,186 @@ const gravity = () =>{
         }
     }
 }
+//creacion de bloques
 
-const createLine = (color) =>{
-    if (container.children[positionLine[3] + 10].classList.contains(`active`)|| container.children[positionLine[2] + 10].classList.contains(`active`) || container.children[positionLine[1] + 10].classList.contains(`active`) || container.children[positionLine[0] + 10].classList.contains(`active`)) {
+const createBlock5 = (color) =>{
+    if (container.children[positionForm[3] + 10].classList.contains(`active`)|| container.children[positionForm[2] + 10].classList.contains(`active`) || container.children[positionForm[1] + 10].classList.contains(`active`) || container.children[positionForm[0] + 10].classList.contains(`active`)) {
         alert("perdiste")
         clearInterval(lineInterval)
         
     }else{
-        positionLine.forEach(e => {
+        positionForm.forEach(e => {
             container.children[e].classList.add(`${color}`);
         });
     }
-
 }
 
-createLine(randomColor(colors))
-// const createBlock = (color, form) =>{
-//     if (form == "line") {
-//         createLine(color)
-//     }
-// }
+
+//Elegir bloque y color al azar y llamar a la funcion que crea el bloque
+const createBlock = (color, form) =>{
+    if (form == "line") {
+        positionForm = [4,14,24,34,44]
+        createBlock5(color)
+    }else if(form == "square"){
+        positionForm = [4,5,14,15]
+        createBlock5(color)
+    }else if(form == "l"){
+        positionForm = [4,14,24,34,35]
+        createBlock5(color)
+    }else if(form == "z"){
+        positionForm = [4,5,15,16]
+        createBlock5(color)
+    }
+}
+
+createBlock(randomColor(colors), randomForm(forms))
 
 //movimiento Y
 const moveY = () =>{
-    positionLine.forEach(e=>{
+    positionForm.forEach(e=>{
         container.children[e].classList.remove(`${currentColor}`);
     })
-
-    positionLine = positionLine.map(value => value + 10);
-
-    positionLine.forEach(e=>{
+    positionForm = positionForm.map(value => value + 10);
+    positionForm.forEach(e=>{
         container.children[e].classList.add(`${currentColor}`);
     })
 }
 
 
+//añadiendo colision con la clase active
+const colision = () =>{
+    positionForm.forEach(e=>{
+        container.children[e].classList.add(`active`);
+    })
+}
 
-const lineInterval = setInterval(() => {
+//destruyendo linea de bloques
+const destroyBlocksLine = ()=>{
     let countBlocks = 0; 
     let blocks = []
-    if (positionLine[4] >= 190 || positionLine[4] >= 199 || container.children[positionLine[4] + 10].classList.contains(`active`) || container.children[positionLine[3] + 10].classList.contains(`active`)|| container.children[positionLine[2] + 10].classList.contains(`active`) || container.children[positionLine[1] + 10].classList.contains(`active`) || container.children[positionLine[0] + 10].classList.contains(`active`)) {
-        positionLine.forEach(e=>{
-            container.children[e].classList.add(`active`);
-        })
-
-
-
-        positionLine = [4,14,24,34,44]
-        createLine(randomColor(colors))
-
-        for (const item of container.children) {
-            if (item.classList.contains("active")) {
-                countBlocks++
-                blocks.push(item.id)
-                if (countBlocks == 10) {
-                    blocks.forEach(e => {
-                        container.children[e].className = "";
-                        container.children[e].classList.add("box");  
-                    });
-                    countBlocks = 0;
-                }
-            }else{
+    for (const item of container.children) {
+        if (item.classList.contains("active")) {
+            countBlocks++
+            blocks.push(item.id)
+            if (countBlocks == 10) {
+                blocks.forEach(e => {
+                    container.children[e].className = "";
+                    container.children[e].classList.add("box");  
+                });
                 countBlocks = 0;
-                blocks= [];
             }
+        }else{
+            countBlocks = 0;
+            blocks= [];
         }
-        gravity()
-
-    }else{
-        moveY()
     }
+    gravity()
+}
+
+const lineInterval = setInterval(() => {
+
+    if (currentForm == "square" || currentForm == "z") {
+        if (positionForm[3] >= 190 || positionForm[3] >= 199 || container.children[positionForm[3] + 10].classList.contains(`active`)|| container.children[positionForm[2] + 10].classList.contains(`active`) || container.children[positionForm[1] + 10].classList.contains(`active`) || container.children[positionForm[0] + 10].classList.contains(`active`)) {
+            colision()
+            createBlock(randomColor(colors), randomForm(forms))
+            destroyBlocksLine()
+        } else {
+            moveY()
+        }
+    } else if( currentForm == "line"|| currentForm == "l") {
+        if (positionForm[4] >= 190 || positionForm[4] >= 199 || container.children[positionForm[4] + 10].classList.contains(`active`) || container.children[positionForm[3] + 10].classList.contains(`active`)|| container.children[positionForm[2] + 10].classList.contains(`active`) || container.children[positionForm[1] + 10].classList.contains(`active`) || container.children[positionForm[0] + 10].classList.contains(`active`)) {
+            colision()
+            createBlock(randomColor(colors),randomForm(forms) )
+            destroyBlocksLine()
+    
+        }else{
+            moveY()
+        }
+    }
+    
 }, 200);    
 
 //movimiento X
 
+
+const rightMove =()=>{
+    positionForm.forEach(e=>{
+        container.children[e].classList.remove(`${currentColor}`);
+    })
+    positionForm = positionForm.map(value => value + 1);
+    positionForm.forEach(e=>{
+        container.children[e].classList.add(`${currentColor}`);
+    })
+}
+const leftMove =()=>{
+    positionForm.forEach(e=>{
+        container.children[e].classList.remove(`${currentColor}`);
+    })
+    positionForm = positionForm.map(value => value - 1);
+    positionForm.forEach(e=>{
+        container.children[e].classList.add(`${currentColor}`);
+    })
+}
+const downMove =()=>{
+    positionForm.forEach(e=>{
+        container.children[e].classList.remove(`${currentColor}`);
+    })
+    positionForm = positionForm.map(value => value + 10);
+    positionForm.forEach(e=>{
+        container.children[e].classList.add(`${currentColor}`);
+    })
+}
+
 document.addEventListener("keydown",(e)=>{
 
-    if (e.key == "ArrowRight") {
-        if (positionLine[0] % 10 === 9 || container.children[positionLine[4] + 1].classList.contains(`active`) || container.children[positionLine[3] + 1].classList.contains(`active`)|| container.children[positionLine[2] + 1].classList.contains(`active`) || container.children[positionLine[1] + 1].classList.contains(`active`) || container.children[positionLine[0] + 1].classList.contains(`active`)) {
+    if (currentForm == "square" || currentForm == "z") {
+        if (positionForm[0] % 10 === 9 || positionForm[3] % 10 === 9 || container.children[positionForm[3] + 1].classList.contains(`active`)|| container.children[positionForm[2] + 1].classList.contains(`active`) || container.children[positionForm[1] + 1].classList.contains(`active`) || container.children[positionForm[0] + 1].classList.contains(`active`)) {
             
-        }else{
-            positionLine.forEach(e=>{
-                container.children[e].classList.remove(`${currentColor}`);
-            })
-            positionLine = positionLine.map(value => value +
-                 1);
-            positionLine.forEach(e=>{
-                container.children[e].classList.add(`${currentColor}`);
-            })
+        } else {
+            if (e.key == "ArrowRight") {
+                if (positionForm[0] % 10 === 9 || container.children[positionForm[3] + 1].classList.contains(`active`)|| container.children[positionForm[2] + 1].classList.contains(`active`) || container.children[positionForm[1] + 1].classList.contains(`active`) || container.children[positionForm[0] + 1].classList.contains(`active`)) {  
+                }else{
+                    rightMove()
+                }
+        
+            }else if(e.key == "ArrowLeft"){
+                if (positionForm[0] % 10 === 0|| container.children[positionForm[3] - 1].classList.contains(`active`)|| container.children[positionForm[2] - 1].classList.contains(`active`) || container.children[positionForm[1] - 1].classList.contains(`active`) || container.children[positionForm[0] - 1].classList.contains(`active`)) {
+                    
+                }else {        
+                    leftMove()
+                }
+        
+            }else if(e.key == "ArrowDown"){
+                if (positionForm[4] >= 180 || positionForm[3] >= 189||container.children[positionForm[3] + 10].classList.contains(`active`)) {
+                }else{
+                    downMove()
+                }
+        
+            }
         }
 
-    }else if(e.key == "ArrowLeft"){
-        if (positionLine[0] % 10 === 0|| container.children[positionLine[4] - 1].classList.contains(`active`) || container.children[positionLine[3] - 1].classList.contains(`active`)|| container.children[positionLine[2] - 1].classList.contains(`active`) || container.children[positionLine[1] - 1].classList.contains(`active`) || container.children[positionLine[0] - 1].classList.contains(`active`)) {
-            
-        }else {        
-            positionLine.forEach(e=>{
-            container.children[e].classList.remove(`${currentColor}`);
-        })
-        positionLine = positionLine.map(value => value - 1);
-        positionLine.forEach(e=>{
-            container.children[e].classList.add(`${currentColor}`);
-
-        })
-    }
-
-    }else if(e.key == "ArrowDown"){
-        if (positionLine[4] >= 180 || positionLine[4] >= 189||container.children[positionLine[4] + 10].classList.contains(`active`)) {
-        }else{
-            positionLine.forEach(e=>{
-                container.children[e].classList.remove(`${currentColor}`);
-            })
-            positionLine = positionLine.map(value => value + 10);
-            positionLine.forEach(e=>{
-                container.children[e].classList.add(`${currentColor}`);
-            })
+    } else if(currentForm == "line" || currentForm == "l"){
+        if (e.key == "ArrowRight") {
+            if (positionForm[0] % 10 === 9 || positionForm[4] % 10 === 9 ||container.children[positionForm[4] + 1].classList.contains(`active`) || container.children[positionForm[3] + 1].classList.contains(`active`)|| container.children[positionForm[2] + 1].classList.contains(`active`) || container.children[positionForm[1] + 1].classList.contains(`active`) || container.children[positionForm[0] + 1].classList.contains(`active`)) {  
+            }else{
+                rightMove()
+            }
+    
+        }else if(e.key == "ArrowLeft"){
+            if (positionForm[0] % 10 === 0|| container.children[positionForm[4] - 1].classList.contains(`active`) || container.children[positionForm[3] - 1].classList.contains(`active`)|| container.children[positionForm[2] - 1].classList.contains(`active`) || container.children[positionForm[1] - 1].classList.contains(`active`) || container.children[positionForm[0] - 1].classList.contains(`active`)) {
+                
+            }else {        
+                leftMove()
+            }
+    
+        }else if(e.key == "ArrowDown"){
+            if (positionForm[4] >= 180 || positionForm[4] >= 189||container.children[positionForm[4] + 10].classList.contains(`active`)) {
+            }else{
+                downMove()
+            }
+    
         }
-
     }
+
+
 })

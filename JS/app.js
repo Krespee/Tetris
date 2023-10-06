@@ -36,6 +36,22 @@ const randomForm = forms =>{
 }
 
 //creacion de bloques
+const gravity = () =>{
+    for (let i = 0; i <= 20; i++) {
+        for (const item of container.children) {
+            if (item.classList.contains("active")) {
+    
+                if (item.id <= 189) {
+                    while (!container.children[Number(item.id) + 10].classList.contains("active")) {
+                        container.children[Number(item.id) + 10].classList.add(item.classList[1])
+                        container.children[Number(item.id)].classList.remove(item.classList[1]);
+                    }
+                }
+    
+            }
+        }
+    }
+}
 
 const createLine = (color) =>{
     if (container.children[positionLine[3] + 10].classList.contains(`active`)|| container.children[positionLine[2] + 10].classList.contains(`active`) || container.children[positionLine[1] + 10].classList.contains(`active`) || container.children[positionLine[0] + 10].classList.contains(`active`)) {
@@ -70,37 +86,43 @@ const moveY = () =>{
     })
 }
 
+
+
 const lineInterval = setInterval(() => {
-    let countBlocks = 1; 
+    let countBlocks = 0; 
     let blocks = []
     if (positionLine[4] >= 190 || positionLine[4] >= 199 || container.children[positionLine[4] + 10].classList.contains(`active`) || container.children[positionLine[3] + 10].classList.contains(`active`)|| container.children[positionLine[2] + 10].classList.contains(`active`) || container.children[positionLine[1] + 10].classList.contains(`active`) || container.children[positionLine[0] + 10].classList.contains(`active`)) {
+        positionLine.forEach(e=>{
+            container.children[e].classList.add(`active`);
+        })
+
+
+
+        positionLine = [4,14,24,34,44]
+        createLine(randomColor(colors))
+
         for (const item of container.children) {
             if (item.classList.contains("active")) {
                 countBlocks++
                 blocks.push(item.id)
                 if (countBlocks == 10) {
                     blocks.forEach(e => {
-                        container.children[e].classList.remove();
-                        container.children[e].classList.add("box");
+                        container.children[e].className = "";
+                        container.children[e].classList.add("box");  
                     });
-                    countBlocks = 1;
+                    countBlocks = 0;
                 }
             }else{
-                countBlocks = 1;
+                countBlocks = 0;
                 blocks= [];
             }
-
         }
+        gravity()
 
-        positionLine.forEach(e=>{
-            container.children[e].classList.add(`active`);
-        })
-        positionLine = [4,14,24,34,44]
-        createLine(randomColor(colors))
     }else{
         moveY()
     }
-}, 1000);    
+}, 200);    
 
 //movimiento X
 

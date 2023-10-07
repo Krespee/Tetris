@@ -3,6 +3,10 @@ let currentColor = "";
 let positionForm = []
 let currentForm = ""
 
+document.addEventListener("DOMContentLoaded", function() {
+    var audio = document.getElementById("miAudio");
+    audio.play();
+  });
 //
 
 const container = document.querySelector(".container");
@@ -214,29 +218,26 @@ const downMove =()=>{
 document.addEventListener("keydown",(e)=>{
 
     if (currentForm == "square" || currentForm == "z") {
-        if (positionForm[0] % 10 === 9 || positionForm[3] % 10 === 9 || container.children[positionForm[3] + 1].classList.contains(`active`)|| container.children[positionForm[2] + 1].classList.contains(`active`) || container.children[positionForm[1] + 1].classList.contains(`active`) || container.children[positionForm[0] + 1].classList.contains(`active`)) {
-            
-        } else {
-            if (e.key == "ArrowRight") {
-                if (positionForm[0] % 10 === 9 || container.children[positionForm[3] + 1].classList.contains(`active`)|| container.children[positionForm[2] + 1].classList.contains(`active`) || container.children[positionForm[1] + 1].classList.contains(`active`) || container.children[positionForm[0] + 1].classList.contains(`active`)) {  
-                }else{
-                    rightMove()
-                }
-        
-            }else if(e.key == "ArrowLeft"){
-                if (positionForm[0] % 10 === 0|| container.children[positionForm[3] - 1].classList.contains(`active`)|| container.children[positionForm[2] - 1].classList.contains(`active`) || container.children[positionForm[1] - 1].classList.contains(`active`) || container.children[positionForm[0] - 1].classList.contains(`active`)) {
-                    
-                }else {        
-                    leftMove()
-                }
-        
-            }else if(e.key == "ArrowDown"){
-                if (positionForm[4] >= 180 || positionForm[3] >= 189||container.children[positionForm[3] + 10].classList.contains(`active`)) {
-                }else{
-                    downMove()
-                }
-        
+        if (e.key == "ArrowRight") {
+            if (positionForm[3] % 10 === 9 || container.children[positionForm[3] + 1].classList.contains(`active`)|| container.children[positionForm[2] + 1].classList.contains(`active`) || container.children[positionForm[1] + 1].classList.contains(`active`) || container.children[positionForm[0] + 1].classList.contains(`active`)) {  
+            }else{
+                rightMove()
             }
+        
+        }else if(e.key == "ArrowLeft"){
+            if (positionForm[0] % 10 === 0|| container.children[positionForm[3] - 1].classList.contains(`active`)|| container.children[positionForm[2] - 1].classList.contains(`active`) || container.children[positionForm[1] - 1].classList.contains(`active`) || container.children[positionForm[0] - 1].classList.contains(`active`)) {
+                    
+            }else {        
+                leftMove()
+            }
+        
+        }else if(e.key == "ArrowDown"){
+            if (positionForm[4] >= 180 || positionForm[3] >= 189||container.children[positionForm[3] + 10].classList.contains(`active`)) {
+            }else{
+                downMove()
+            }
+        
+            
         }
 
     } else if(currentForm == "line" || currentForm == "l"){

@@ -2,6 +2,7 @@
 let currentColor = "";
 let positionForm = []
 let currentForm = ""
+let currentEjeLine = "horizontal"; 
 
 document.addEventListener("DOMContentLoaded", function() {
     var audio = document.getElementById("miAudio");
@@ -181,7 +182,6 @@ const lineInterval = setInterval(() => {
             moveY()
         }
     }
-    
 }, 1000);    
 
 //movimiento X
@@ -213,6 +213,34 @@ const downMove =()=>{
     positionForm.forEach(e=>{
         container.children[e].classList.add(`${currentColor}`);
     })
+}
+
+const rotateLineV = ()=>{
+    positionForm.forEach(e=>{
+        container.children[e].classList.remove(`${currentColor}`);
+    })
+    positionForm [0] += 18
+    positionForm [1] += 9
+    positionForm [3] -= 8
+    positionForm [4] -= 19
+    positionForm.forEach(e=>{
+        container.children[e].classList.add(`${currentColor}`);
+    })
+    currentEjeLine = "vertical"
+}
+const rotateLineH = ()=>{
+
+    positionForm.forEach(e=>{
+        container.children[e].classList.remove(`${currentColor}`);
+    })
+    positionForm [0] -= 18
+    positionForm [1] -= 9
+    positionForm [3] += 8
+    positionForm [4] += 19
+    positionForm.forEach(e=>{
+        container.children[e].classList.add(`${currentColor}`);
+    })
+    currentEjeLine = "horizontal"
 }
 
 document.addEventListener("keydown",(e)=>{
@@ -259,7 +287,19 @@ document.addEventListener("keydown",(e)=>{
             }else{
                 downMove()
             }
-    
+        }else if(e.key == "ArrowUp"){
+            if (currentForm == "line") {
+                if (currentEjeLine == "horizontal" && positionForm[0] % 10 !== 0 && positionForm[0] % 10 !== 1 && positionForm[0] % 10 !==8  && positionForm[0] % 10 !== 9 && !container.children[positionForm[0] + 18].classList.contains("active") && !container.children[positionForm[1] + 9].classList.contains("active") && !container.children[positionForm[3] - 9].classList.contains("active") && !container.children[positionForm[4] - 18].classList.contains("active")){
+                    rotateLineV()
+
+                }else if (currentEjeLine == "vertical"){
+                    rotateLineH()
+                }                
+            }else if(currentForm == "l"){
+
+            }else if(currentForm == "z"){
+
+            }
         }
     }
 

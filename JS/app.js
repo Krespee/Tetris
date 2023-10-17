@@ -4,6 +4,7 @@ let positionForm = []
 let currentForm = ""
 let currentEjeLine = "horizontal"; 
 let currentEjeL = "horizontal"; 
+let currentEjeZ = "horizontal"; 
 
 
 // document.addEventListener("DOMContentLoaded", function() {
@@ -168,7 +169,7 @@ const destroyBlocksLine = ()=>{
 const lineInterval = setInterval(() => {
 
     if (currentForm == "square" || currentForm == "z") {
-        if (positionForm[3] >= 190 || positionForm[3] >= 199 || container.children[positionForm[3] + 10].classList.contains(`active`)|| container.children[positionForm[2] + 10].classList.contains(`active`) || container.children[positionForm[1] + 10].classList.contains(`active`) || container.children[positionForm[0] + 10].classList.contains(`active`)) {
+        if (positionForm[3] >= 190 || positionForm[3] >= 199 || container.children[positionForm[0] + 10].classList.contains(`active`) || container.children[positionForm[3] + 10].classList.contains(`active`)|| container.children[positionForm[2] + 10].classList.contains(`active`) || container.children[positionForm[1] + 10].classList.contains(`active`) || container.children[positionForm[0] + 10].classList.contains(`active`)) {
             colision()
             createBlock(randomColor(colors), randomForm(forms))
             destroyBlocksLine()
@@ -231,6 +232,16 @@ const rotateL = (x1, x2, y1, y2)=>{
     positionForm [4] += y2
 }
 
+const rotateZ = (x1,x2,x3) => {
+    positionForm [0] += x1
+    positionForm [1] += x2
+    positionForm [3] += x3
+}
+const rotateZV = (x1,x2,x3) => {
+    positionForm [0] -= x1
+    positionForm [1] -= x2
+    positionForm [3] -= x3
+}
 
 
 const rotate = (x1, x2, y1, y2 )=>{
@@ -257,7 +268,17 @@ const rotate = (x1, x2, y1, y2 )=>{
                 currentEjeL = "horizontal"
             }
         }
-    } else {
+    }else if (currentForm == "z"){
+        if (currentEjeZ == "horizontal") {
+            rotateZ(x1,x2,y2)
+            currentEjeZ = "vertical"
+            console.log(currentEjeZ);
+        } else if (currentEjeZ == "vertical") {
+            rotateZV(x1,x2,y2)
+            currentEjeZ = "horizontal"
+            console.log(currentEjeZ);
+        }
+    }else{
         if (currentEjeLine == "horizontal") {
             rotateR(x1, x2, y1, y2)
             currentEjeLine = "vertical"
@@ -291,11 +312,21 @@ document.addEventListener("keydown",(e)=>{
                 leftMove()
             }
         }else if(e.key == "ArrowDown"){
-            if (positionForm[4] >= 180 || positionForm[3] >= 189||container.children[positionForm[3] + 10].classList.contains(`active`)) {
+            if (positionForm[4] >= 180 || positionForm[3] >= 189 || container.children[positionForm[3] + 10].classList.contains(`active`) || container.children[positionForm[2] + 10].classList.contains(`active`) || container.children[positionForm[1] + 10].classList.contains(`active`) || container.children[positionForm[0] + 10].classList.contains(`active`)){
             }else{
                 downMove()
             }
+        }else if(e.key == "ArrowUp"){
+
+        if(currentForm == "z" ){
+            if (currentEjeZ == "horizontal"  && !container.children[positionForm[0] + 1].classList.contains("active") && !container.children[positionForm[1] + 9].classList.contains("active") && !container.children[positionForm[3] + 8].classList.contains("active")) {
+                rotate(1,9,0,8)                
+            }else if(currentEjeZ == "vertical" && positionForm[0] % 10 !== 9 && !container.children[positionForm[0] - 1].classList.contains("active") && !container.children[positionForm[1] - 9].classList.contains("active") && !container.children[positionForm[3] - 8].classList.contains("active")){
+                rotate(1,9,0,8)
+            }
         }
+}        
+
     } else if(currentForm == "line" || currentForm == "l"){
         if (e.key == "ArrowRight") {
             if (positionForm[0] % 10 === 9 || positionForm[4] % 10 === 9 ||container.children[positionForm[4] + 1].classList.contains(`active`) || container.children[positionForm[3] + 1].classList.contains(`active`)|| container.children[positionForm[2] + 1].classList.contains(`active`) || container.children[positionForm[1] + 1].classList.contains(`active`) || container.children[positionForm[0] + 1].classList.contains(`active`)) {  
@@ -323,19 +354,18 @@ document.addEventListener("keydown",(e)=>{
                     rotate(18,9,8,19)
                 }                
             }else if(currentForm == "l" ){
-                if (currentEjeL == "horizontal") {
+                if (currentEjeL == "horizontal"  && positionForm[0] % 10 !== 0 && positionForm[0] % 10 !== 1 && positionForm[0] % 10 !==8  && positionForm[4] % 10 !== 9&& !container.children[positionForm[0] + 18].classList.contains("active") && !container.children[positionForm[1] + 9].classList.contains("active") && !container.children[positionForm[3] - 9].classList.contains("active") && !container.children[positionForm[4] - 18].classList.contains("active")) {
                     console.log("object");
                     rotate(18,9,9,20)
-                } else if (currentEjeL == "vertical"){
+                } else if (currentEjeL == "vertical" && !container.children[positionForm[0] + 22].classList.contains("active") && !container.children[positionForm[1] + 11].classList.contains("active") && !container.children[positionForm[3] - 11].classList.contains("active") && !container.children[positionForm[4] - 2].classList.contains("active")){
                     rotate(22,11,11,2)
-                }else if (currentEjeL == "horizontal1"){
+                }else if (currentEjeL == "horizontal1" && positionForm[0] % 10 !==8  && positionForm[0] % 10 !== 9 && !container.children[positionForm[0] - 18].classList.contains("active") && !container.children[positionForm[1] - 9].classList.contains("active") && !container.children[positionForm[3] + 9].classList.contains("active") && !container.children[positionForm[4] + 20].classList.contains("active")){
                     rotate(18,9,9,20)
                 }else if (currentEjeL == "vertical1"){
                     rotate(22,11,11,2)
                 }
-            }else if(currentForm == "z"){
-
             }
+
         }
     }
 

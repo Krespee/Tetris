@@ -34,7 +34,7 @@ const addPoints=(points)=>{
     scorePoints += points;
     score.textContent = scorePoints
     updateScore()
-    if(points )
+    if(points ){}
 }
 
 

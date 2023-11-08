@@ -5,8 +5,38 @@
 }
 
 body{
-    background: #000;
+    background: #638553;
+    font-family: sans-serif;
 }
+
+.screen{
+    display: flex;
+    gap: 25px;
+}
+.screen-info{
+    width: 200px;
+    background-color: #2662c1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+.screen-info h2{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.screen-info span{
+    display: block;
+    background-color: #bfbfbf;
+    border-radius: 5px;
+    width: 70px;
+    text-align: center;
+}
+
+
 
 .container{
     width: 300px;
@@ -24,16 +54,36 @@ body{
 
 .block-blue{
     background-color: blue;
+    border-bottom: 4px solid rgb(0, 0, 84);
+    border-top: 4px solid rgb(223, 223, 223);
+    border-right: 4px solid rgb(16, 16, 255);
+    border-left: 4px solid rgb(16, 16, 255);
 }
 .block-red{
     background-color: red;
+    border-bottom: 4px solid rgb(84, 0, 11);
+    border-top: 4px solid rgb(223, 223, 223);
+    border-right: 4px solid rgb(241, 30, 30);
+    border-left: 4px solid rgb(241, 30, 30);
 }
 .block-green{
     background-color: green;
+    border-bottom: 4px solid rgb(10, 56, 4);
+    border-top: 4px solid rgb(223, 223, 223);
+    border-right: 4px solid rgb(14, 173, 45);
+    border-left: 4px solid rgb(14, 173, 45);
 }
 .block-yellow{
-    background-color: yellow;
+    background-color: rgb(224, 224, 3);
+    border-bottom: 4px solid rgb(77, 84, 0);
+    border-top: 4px solid rgb(223, 223, 223);
+    border-right: 4px solid rgb(255, 255, 53);
+    border-left: 4px solid rgb(255, 255, 53);
 }
 .block-white{
-    background-color: white;
+    background-color: rgb(0, 162, 255);
+    border-bottom: 4px solid rgb(0, 66, 84);
+    border-top: 4px solid rgb(223, 223, 223);
+    border-right: 4px solid rgb(40, 151, 255);
+    border-left: 4px solid rgb(40, 151, 255);
 }
